@@ -22,7 +22,7 @@ for (let i = 0; i < 2; i++) {
         console.log("done");
         appData.expenses[a] = b;
     } else {
-        i--;
+        i--; 
     }
 }
 
@@ -39,3 +39,5 @@ if (appData.moneyPerDay < 100) {
 } else {
     console.log("Произошла ошибка");
 }
+
+//Проверка git push
