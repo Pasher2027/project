@@ -19,9 +19,12 @@ for (let i = 0; i < 2; i++) {
     
     if ( typeof(a) === 'string' && typeof(a) != null && typeof(b) != null 
         && a != '' && b != '' && a.length < 50) {
-        console.log("done");
+
         appData.expenses[a] = b;
+
+        alert("Сохранено!");
     } else {
+        alert("Ошибка. Вы не ответили на один из вопросов.");
         i--; 
     }
 }
@@ -29,35 +32,43 @@ for (let i = 0; i < 2; i++) {
 // let i = 0;
 
 // while (i < 2) {
-//     i++;
 
 //     let a = prompt("Введите обязательную статью расходов в этом месяце", ""),
 //         b = prompt("Во сколько обойдется?", "");
 
 //     if ( typeof(a) === 'string' && typeof(a) != null && typeof(b) != null 
-//     && a != '' && b != '' && a.length < 50) {
-//         console.log("done");
+//         && a != '' && b != '' && a.length < 50) {
+
 //         appData.expenses[a] = b;
+
+//         alert("Сохранено!");
 //     } else {
+//         alert("Ошибка. Вы не ответили на один из вопросов.");
 //         i--; 
 //     }
+    
+//     i++;
 // }
 
 
 // do {
-//     i++;
-
 //     let a = prompt("Введите обязательную статью расходов в этом месяце", ""),
 //         b = prompt("Во сколько обойдется?", "");
 
 //     if ( typeof(a) === 'string' && typeof(a) != null && typeof(b) != null 
-//     && a != '' && b != '' && a.length < 50) {
-//         console.log("done");
+//         && a != '' && b != '' && a.length < 50) {
+
 //         appData.expenses[a] = b;
+
+//         alert("Сохранено!");
 //     } else {
+//         alert("Ошибка. Вы не ответили на один из вопросов.");
 //         i--; 
 //     }
-// } while (i < 2); 
+
+//     i++;
+// } 
+// while (i < 2); 
 
 appData.moneyPerDay = appData.budget / 30;
 
