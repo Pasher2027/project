@@ -6,7 +6,9 @@ let body = document.body,
     menu = document.querySelector('.menu'),
     menuItemNew = document.createElement('li'),
     title = document.querySelector('#title'),
-    adv = document.querySelector('.adv');
+    adv = document.querySelector('.adv'),
+    ans = prompt("Ваше отношение к технике Apple?", ""),
+    question = document.querySelector('#prompt');
 
 menu.insertBefore(menuItem[2], menuItem[1]);
 
@@ -21,3 +23,5 @@ body.style.backgroundImage = 'url(img/apple_true.jpg)';
 title.textContent = 'Мы продаем только подлинную технику Apple';
 
 adv.remove();
+
+question.textContent = ans;
