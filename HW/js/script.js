@@ -1,0 +1,23 @@
+"use strict";
+
+
+let body = document.body,
+    menuItem = document.querySelectorAll('.menu-item'),
+    menu = document.querySelector('.menu'),
+    menuItemNew = document.createElement('li'),
+    title = document.querySelector('#title'),
+    adv = document.querySelector('.adv');
+
+menu.insertBefore(menuItem[2], menuItem[1]);
+
+menu.appendChild(menuItemNew);
+
+menuItemNew.classList.add('menu-item');
+
+menuItemNew.textContent = 'Пятый пункт';
+
+body.style.backgroundImage = 'url(img/apple_true.jpg)';
+
+title.textContent = 'Мы продаем только подлинную технику Apple';
+
+adv.remove();
