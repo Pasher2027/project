@@ -1,161 +1,163 @@
 "use strict";
 
-let money, 
-    time,
-    items;
+let startBtn = document.querySelector('#start'),
+    table = document.querySelector('.result-table').children,
+    arrTable = Array.from(table),
+    arrValue = [],
+    expensesItem = document.querySelectorAll('.expenses-item'),
+    expensesBtn = document.getElementsByTagName('button')[0],
+    optExpensesBtn = document.getElementsByTagName('button')[1],
+    budgetBtn = document.getElementsByTagName('button')[2],
+    optionalExpensesItems = document.querySelectorAll('.optionalexpenses-item'),
+    incomeItem = document.querySelector('#income'),
+    savings = document.querySelector('#savings'),
+    sumValue = document.querySelector('#sum'),
+    percentValue = document.querySelector('#percent'),
+    year = document.querySelector('.year-value'),
+    month = document.querySelector('.month-value'),
+    day = document.querySelector('.day-value');
 
-function start() {
-    // time = prompt("Введите дату в формате YYYY-MM-DD", "");
-
-    while (isNaN(money) || money == "" || money == null) { //Проверка на правильное значение от пользователя
-        money = +prompt("Ваш бюджет на месяц?", "");
-    }
+for (let i = 0, k = 1; i < arrTable.length / 2; i++, k += 2) {
+    arrValue[i] = arrTable[k];
 
 }
 
-//Метод isNan() возвращает true если в переменную попали не цифры
+startBtn.addEventListener('click', function () {
 
+    time = prompt("Введите дату в формате YYYY-MM-DD", "");
+    while (isNaN(money) || money == "" || money == null) { //Проверка на правильное значение от пользователя
+        money = +prompt("Ваш бюджет на месяц?", "");
+    }
+    appData.budget = money;
+    appData.timeData = time;
+    arrValue[0].textContent = money.toFixed();
+    year.value = new Date(Date.parse(time)).getFullYear();
+    month.value = new Date(Date.parse(time)).getMonth() + 1;
+    day.value = new Date(Date.parse(time)).getDate();
 
+});
 
-start();
+expensesBtn.addEventListener('click', function () {
+    if (appData.budget != undefined) {
+        let sum = 0;
+        for (let i = 0; i < expensesItem.length; i++) {
+            let a = expensesItem[i].value,
+                b = expensesItem[++i].value;
 
-let appData = {
-    budget: money,
-    expenses: {},
-    savings: true,
-    optionalExpenses: {},
-    chooseExpenses: function () {
-
-        for (let i = 0; i < 2; i++) {
-            let a = prompt("Введите обязательную статью расходов в этом месяце", ""),
-                b = prompt("Во сколько обойдется?", "");
-
-            if (typeof (a) === 'string' && typeof (a) != null && typeof (b) != null &&
+            if (typeof (a) != null && typeof (b) != null &&
                 a != '' && b != '' && a.length < 50) {
-
                 appData.expenses[a] = b;
-
-                alert("Сохранено!");
+                sum += +b;
             } else {
                 alert("Ошибка. Вы не/неправильно ответили на один из вопросов.");
                 i--;
             }
         }
+        arrValue[3].textContent = sum;
 
-    },
-    detectDayBudget: function () {
-        appData.moneyPerDay = (appData.budget / 30).toFixed();
+    } else {
+        alert('Вы не начали рассчёт');
+    }
+});
+
+optExpensesBtn.addEventListener('click', function () {
+
+    if (appData.budget != undefined) {
+
+        for (let i = 0; i <= optionalExpensesItems.length; i++) {
+            let a = optionalExpensesItems[i].value;
+            appData.optionalExpenses[i] = a;
+            arrValue[4].textContent += appData.optionalExpenses[i] + ' ';
+        }
+    } else {
+        alert('Вы не начали рассчёт');
+    }
+});
+
+budgetBtn.addEventListener('click', function () {
+
+    if (appData.budget != undefined) {
+
+        appData.moneyPerDay = ( (appData.budget - +arrValue[3].textContent) / 30).toFixed();
 
         //Метод .toFixed() возвращает строковое значение и округляет до знака после запятой, который передается в скобках
 
-        alert("Ежедневный бюджет: " + appData.moneyPerDay);
+        arrValue[1].textContent = appData.moneyPerDay;
 
-    },
-    detectLevel: function () {
 
         if (appData.moneyPerDay < 100) {
-            alert("Минимальный уровень достатка");
+            arrValue[2].textContent = "Минимальный уровень достатка";
 
         } else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
-            alert("Средний уровень достатка");
+
+            arrValue[2].textContent = "Средний уровень достатка";
 
         } else if (appData.moneyPerDay > 2000) {
-            alert("Высокий уровень достатка");
+            arrValue[2].textContent = "Высокий уровень достатка";
 
-        } else {
-            alert("Произошла ошибка");
         }
 
+    } else {
+        alert('Вы не начали рассчёт');
+    }
 
-    },
-    checkSavings: function () {
+});
 
-        if (appData.savings == true) {
-            let save = +prompt("Какова сумма накоплений?", ""),
-                percent = +prompt("Под какой процент?", "");
+incomeItem.addEventListener('input', function () {
+
+    items = incomeItem.value;
+    appData.income = items.split(', ');
+    arrValue[5].textContent = appData.income;
+});
+
+savings.addEventListener('click', function () {
+    if (appData.savings == true) {
+        appData.savings = false;
+    } else {
+        appData.savings = true;
+    }
+
+});
+
+sumValue.addEventListener('input', function () {
+    if (appData.savings == true) {
+        let sum = +sumValue.value,
+            percent = +percentValue.value;
+
+        appData.monthIncome = sum / 100 / 12 * percent;
+        appData.yearIncome = sum / 100 * percent;
+
+        arrValue[6].textContent = appData.monthIncome.toFixed(1);
+        arrValue[7].textContent = appData.yearIncome.toFixed(1);
+    }
+});
+
+percentValue.addEventListener('input', function () {
+    if (appData.savings == true) {
+        let sum = +sumValue.value,
+            percent = +percentValue.value;
+
+        appData.monthIncome = sum / 100 / 12 * percent;
+        appData.yearIncome = sum / 100 * percent;
+
+        arrValue[6].textContent = appData.monthIncome.toFixed(1);
+        arrValue[7].textContent = appData.yearIncome.toFixed(1);
+    }
+});
 
 
-            appData.monthIncome = save / 100 / 12 * percent;
-            alert("Доход в месяц с вашего депозита: " + appData.monthIncome);
-        }
+let money,
+    time,
+    items;
 
-    },
-    chooseOptExpenses: function () {
-        for (let i = 1; i <= 3; i++) {
-            let a = prompt("Статья необязательных расходов?", "");
-            appData.optionalExpenses[i] = a;
-        }
-    },
-    chooseIncome: function () {
-
-        items = prompt("Что принесет дополнительный доход? (Перечислите через запятую)", "");
-
-        if ( typeof(items) != "string" || items == "" || typeof(items)  == null ) {
-            alert("Ошибка! Нельзя вводить не строковое/пустое значение или нажимать кнопку отмены.");
-        } else {
-
-            appData.income = items.split(', ');
-            appData.income.push(prompt("Может что-то ещё?", ""));
-            appData.income.sort();
-            appData.income.forEach(function(value, i) {
-                alert(`Способы доп.заработка: ${i + 1}. ${value}`);
-            });
-        }
-
-    },
+//Метод isNan() возвращает true если в переменную попали не цифры
 
 
-    // timeData: time,
-    // income: [],
-
+let appData = {
+    budget: money,
+    expenses: {},
+    savings: false,
+    timeData: time,
+    income: [],
+    optionalExpenses: {},
 };
-
-
-for (let key in appData) {
-    console.log(`Наша программа включает в себя данные: ${key} - ${appData[key]}`);
-}
-//Объект, в котором используются "пустые" переменные нельзя объявлять
-// до приминения функции, в которой используются переменные объекта
-// Сложнооо..
-
-
-// let i = 0;
-
-// while (i < 2) {
-
-//     let a = prompt("Введите обязательную статью расходов в этом месяце", ""),
-//         b = prompt("Во сколько обойдется?", "");
-
-//     if ( typeof(a) === 'string' && typeof(a) != null && typeof(b) != null 
-//         && a != '' && b != '' && a.length < 50) {
-
-//         appData.expenses[a] = b;
-
-//         alert("Сохранено!");
-//     } else {
-//         alert("Ошибка. Вы не ответили на один из вопросов.");
-//         i--; 
-//     }
-
-//     i++;
-// }
-
-
-// do {
-//     let a = prompt("Введите обязательную статью расходов в этом месяце", ""),
-//         b = prompt("Во сколько обойдется?", "");
-
-//     if ( typeof(a) === 'string' && typeof(a) != null && typeof(b) != null 
-//         && a != '' && b != '' && a.length < 50) {
-
-//         appData.expenses[a] = b;
-
-//         alert("Сохранено!");
-//     } else {
-//         alert("Ошибка. Вы не ответили на один из вопросов.");
-//         i--; 
-//     }
-
-//     i++;
-// } 
-// while (i < 2); 
